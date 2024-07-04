@@ -8,6 +8,7 @@ public class DynamicTpApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DynamicTpApplication.class, args);
+
 	}
 
 }

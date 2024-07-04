@@ -20,7 +20,7 @@ public class NamedThreadFactory implements ThreadFactory {
 	private final ThreadGroup group;
 	private final String namePrefix;
 	private final Integer priority;
-	private final AtomicInteger seq = new AtomicInteger(1);
+	private final AtomicInteger seq = new AtomicInteger(0);
 	private final Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
 	public NamedThreadFactory(String namePrefix,boolean daemon,int priority){
 		this.namePrefix = namePrefix;
@@ -39,7 +39,9 @@ public class NamedThreadFactory implements ThreadFactory {
 
 	@Override
 	public Thread newThread(Runnable r) {
-		Thread t = new Thread(group,r,String.format("{}{}",namePrefix,seq.getAndIncrement()));
+//		String.format("{}{}",namePrefix,seq.getAndIncrement())
+		Thread t = new Thread(group,r,new StringBuilder()
+				.append("--").append(namePrefix).append("--").append(seq.getAndIncrement()).toString());
 		t.setDaemon(daemon);
 		t.setPriority(priority);
 		t.setUncaughtExceptionHandler(uncaughtExceptionHandler);

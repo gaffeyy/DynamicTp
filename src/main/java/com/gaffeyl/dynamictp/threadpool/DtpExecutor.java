@@ -30,4 +30,24 @@ public class DtpExecutor extends ThreadPoolExecutor {
 	public String getThreadPoolName(){
 		return this.threadPoolName;
 	}
+
+	public String getQueueName(){
+		return this.getQueue().getClass().getSimpleName();
+	}
+	public int getQueueCapacity(){
+		return this.getQueue().size() + getQueue().remainingCapacity();
+	}
+	public String getInformation(){
+		return new StringBuilder()
+				.append("ThreadPoolName:"+threadPoolName+"\n")
+				.append("CorePoolSize:"+getCorePoolSize()+"\n")
+				.append("MaximumSize:"+getMaximumPoolSize()+"\n")
+				.append("KeepAliveTime:"+getKeepAliveTime(TimeUnit.SECONDS)+"\n")
+				.append("QueueName:"+getQueueName()+"--QueueType:"+getQueue().getClass().getSimpleName()+"--QueueCapacity:"+getQueueCapacity()+"\n")
+				.append("ThreadFactory:"+getThreadFactory()+"\n")
+				.append("RejectPolicy:"+getRejectedExecutionHandler()+"\n")
+//				.append("ThreadPoolName:"+threadPoolName+"\n")
+				.toString();
+
+	}
 }

@@ -1,6 +1,5 @@
 package com.gaffeyl.dynamictp.threadpool;
 
-import com.gaffeyl.dynamictp.entity.DtpProperties;
 import io.micrometer.common.util.StringUtils;
 
 import java.util.concurrent.*;

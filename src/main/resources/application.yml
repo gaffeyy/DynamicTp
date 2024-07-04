@@ -2,14 +2,27 @@ spring:
   application:
     name: dynamictp
   dynamictp:
-    core-pool-size: 5
-    maximum-pool-size: 10
-    keep-alive-time: 30
-    time-unit: seconds
-    queue-name: "myQueue"
-    capacity: 10
-    fair: true
-    thread-pool-name: "testThreadPoolName"
-    reject-handler-name: "testRejectHandler"
+
+    executors:
+      - core-pool-size: 10
+        maximum-pool-size: 10
+        keep-alive-time: 10
+        time-unit: seconds
+        queue-name: "myQueue"
+        capacity: 10
+        fair: true
+        thread-pool-name: "test2"
+        reject-handler-name: "testRejectHandler"
+
+      - core-pool-size: 10
+        maximum-pool-size: 12
+        keep-alive-time: 30
+        time-unit: seconds
+        queue-name: "myQueue"
+        capacity: 20
+        fair: true
+        thread-pool-name: "test1"
+        reject-handler-name: "testRejectHandler"
+
 
 
