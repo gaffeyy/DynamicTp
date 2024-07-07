@@ -24,4 +24,5 @@ public class DtpPropsRequestBody {
 	private String threadPoolName;
 	private String rejectHandlerName;
 	private String threadPoolToUpdate;
+	private Boolean allowCoreThreadTimeOut;
 }

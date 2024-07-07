@@ -1,6 +1,7 @@
 spring:
   application:
     name: dynamictp
+
   dynamictp:
 
     executors:
@@ -8,21 +9,33 @@ spring:
         maximum-pool-size: 10
         keep-alive-time: 10
         time-unit: seconds
-        queue-name: "myQueue"
+        queue-name: "ArrayBlockingQueue"
         capacity: 10
         fair: true
-        thread-pool-name: "test2"
-        reject-handler-name: "testRejectHandler"
+        thread-pool-name: "test1"
+        reject-handler-name: "AbortPolicy"
 
       - core-pool-size: 10
         maximum-pool-size: 12
         keep-alive-time: 30
         time-unit: seconds
-        queue-name: "myQueue"
+        queue-name: "LinkedBlockingQueue"
         capacity: 20
         fair: true
-        thread-pool-name: "test1"
-        reject-handler-name: "testRejectHandler"
+        thread-pool-name: "test2"
+        reject-handler-name: "DiscardPolicy"
 
-
+      - core-pool-size: 10
+        maximum-pool-size: 10
+        keep-alive-time: 10
+        time-unit: seconds
+        queue-name: "LinkedBlockingDeque"
+        capacity: 10
+        fair: true
+        thread-pool-name: "test3"
+        reject-handler-name: "CallerRunsPolicy"
+server:
+  port: 8088
+  servlet:
+    context-path: /api
 

@@ -1,5 +1,6 @@
 package com.gaffeyl.dynamictp.threadpool;
 
+import com.gaffeyl.dynamictp.Enum.QueueTypeEnum;
 import io.micrometer.common.util.StringUtils;
 
 import java.util.concurrent.*;
@@ -21,6 +22,11 @@ public class ThreadPoolBuilder {
 	private BlockingQueue<Runnable> workQueue;
 	private RejectedExecutionHandler rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
 	private ThreadFactory threadFactory = new NamedThreadFactory("dynamicTp");
+
+	/**
+	 * If allow core thread timeout.
+	 */
+	private boolean allowCoreThreadTimeOut = false;
 
 	private ThreadPoolBuilder(){}
 
@@ -61,13 +67,13 @@ public class ThreadPoolBuilder {
 
 	public ThreadPoolBuilder wordQueue(String queueName,Integer capacity,boolean fair){
 		if(StringUtils.isNotBlank(queueName)){
-			workQueue = new LinkedBlockingQueue<>(capacity);
+			workQueue = QueueTypeEnum.buildBlockingQueue(queueName,capacity,fair);
 		}
 		return this;
 	}
 	public ThreadPoolBuilder rejectedExecutionHandler(String rejectedName) {
 		if (StringUtils.isNotBlank(rejectedName)) {
-			rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
+			rejectedExecutionHandler = RejectHandlerBuilder.buildRejectHandler(rejectedName);
 		}
 		return this;
 	}
@@ -89,6 +95,7 @@ public class ThreadPoolBuilder {
 				builder.rejectedExecutionHandler
 		);
 		dtpExecutor.setThreadPoolName(builder.threadPoolName);
+		dtpExecutor.allowCoreThreadTimeOut(builder.allowCoreThreadTimeOut);
 		return dtpExecutor;
 	}
 

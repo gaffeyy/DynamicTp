@@ -13,6 +13,7 @@ import java.util.concurrent.*;
 public class DtpExecutor extends ThreadPoolExecutor {
 
 	private String threadPoolName;
+	private String rejectHandlerName;
 	DtpExecutor(
 			int corePoolSize,
 			int maximumPoolSize,
@@ -23,6 +24,9 @@ public class DtpExecutor extends ThreadPoolExecutor {
 			RejectedExecutionHandler handler
 	){
 		super(corePoolSize,maximumPoolSize,keepAliveTime,timeUnit,workQueue,threadFactory);
+		this.rejectHandlerName = handler.getClass().getSimpleName();
+		RejectedExecutionHandler rejectedExecutionHandler = RejectHandlerBuilder.buildRejectHandler(rejectHandlerName);
+		setRejectedExecutionHandler(rejectedExecutionHandler);
 	}
 	public void setThreadPoolName(String name){
 		this.threadPoolName = name;

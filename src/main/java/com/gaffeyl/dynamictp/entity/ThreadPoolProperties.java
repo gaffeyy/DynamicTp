@@ -25,4 +25,5 @@ public class ThreadPoolProperties {
 	private Boolean fair;
 	private String threadPoolName;
 	private String rejectHandlerName;
+	private Boolean allowCoreThreadTimeOut;
 }

@@ -21,18 +21,29 @@ import java.util.List;
  * @Description:
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/update")
 public class DtpController {
 	@Resource
 	MyRefresh myRefresh;
 	@PostMapping("/updateDtp")
-	public List<String> update(@RequestBody DtpPropsRequestBody dtpPropsRequest){
+	public List<DtpPropsResponseBody> update(@RequestBody DtpPropsRequestBody dtpPropsRequest){
 		myRefresh.refresh(dtpPropsRequest,dtpPropsRequest.getThreadPoolName());
 		List<String> allDtp = DtpRegistry.getAllDtp();
-		List<String> result = new ArrayList<>();
+		List<DtpPropsResponseBody> result = new ArrayList<>();
 		for(String s:allDtp){
 			DtpExecutor executor = DtpRegistry.getExecutor(s);
-			result.add(executor.getInformation());
+			DtpPropsResponseBody dtpPropsResponseBody = new DtpPropsResponseBody();
+			dtpPropsResponseBody.setThreadPoolName(executor.getThreadPoolName());
+			dtpPropsResponseBody.setCorePoolSize(executor.getCorePoolSize());
+			dtpPropsResponseBody.setMaximumPoolSize(executor.getMaximumPoolSize());
+			dtpPropsResponseBody.setKeepAliveTime(executor.getKeepAliveTime(TimeUnit.SECONDS));
+			dtpPropsResponseBody.setTimeUnit(TimeUnit.NANOSECONDS);
+			dtpPropsResponseBody.setQueueName(executor.getQueueName());
+			dtpPropsResponseBody.setCapacity(executor.getQueueCapacity());
+			dtpPropsResponseBody.setFair(false);
+			dtpPropsResponseBody.setRejectHandlerName(executor.getRejectedExecutionHandler().getClass().getSimpleName());
+			result.add(dtpPropsResponseBody);
 		}
 		return result;
 	}

@@ -4,6 +4,7 @@ import com.gaffeyl.dynamictp.entity.DtpProperties;
 import com.gaffeyl.dynamictp.entity.ThreadPoolProperties;
 import com.gaffeyl.dynamictp.refresh.RefreshEvent;
 import com.gaffeyl.dynamictp.threadpool.DtpExecutor;
+import com.gaffeyl.dynamictp.threadpool.RejectHandlerBuilder;
 import com.gaffeyl.dynamictp.threadpool.ThreadPoolBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -90,6 +91,8 @@ public class DtpRegistry implements InitializingBean, ApplicationListener<Refres
 	}
 	private DtpExecutor doRefresh(String threadPoolName,ThreadPoolProperties props){
 		DtpExecutor executor = registryMap.get(threadPoolName);
+//		executor = new DtpExecutor();
+		executor.setRejectedExecutionHandler(RejectHandlerBuilder.buildRejectHandler(props.getRejectHandlerName()));
 		executor.setMaximumPoolSize(props.getMaximumPoolSize());
 		executor.setCorePoolSize(props.getCorePoolSize());
 		executor.setKeepAliveTime(props.getKeepAliveTime(), TimeUnit.SECONDS);
